@@ -18,7 +18,9 @@ import {
   Linkedin,
   Globe,
   Facebook,
-  Youtube
+  Youtube,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 // Social platform icon mapping
@@ -38,6 +40,8 @@ export default function TeamMemberPage() {
   const [member, setMember] = useState<TeamMember | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showAllBooks, setShowAllBooks] = useState(false);
+  const [booksViewMode, setBooksViewMode] = useState<'list' | 'grid'>('list');
 
   useEffect(() => {
     if (params.id) {
@@ -194,49 +198,173 @@ export default function TeamMemberPage() {
             {/* Books Section - Enhanced with Covers */}
             {member.bookLinks && member.bookLinks.length > 0 && (
               <div className="mb-12">
-                <h3 className="text-xl font-semibold text-[#222222] mb-6 flex items-center">
-                  <Book className="w-6 h-6 mr-3" />
-                  Published Works
-                </h3>
-                <div className="space-y-6">
-                  {member.bookLinks.map((book, index) => (
-                    <div key={index} className="flex gap-4 p-4 bg-[#F8F4F1] rounded-lg hover:bg-[#E3DDC9] transition-colors">
-                      {/* Book Cover */}
-                      {book.coverImageUrl && (
-                        <div className="flex-shrink-0">
-                          <Image
-                            src={book.coverImageUrl}
-                            alt={`${book.title} cover`}
-                            width={80}
-                            height={120}
-                            className="rounded shadow-md object-cover"
-                          />
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-semibold text-[#222222] flex items-center">
+                    <Book className="w-6 h-6 mr-3" />
+                    Published Works ({member.bookLinks.length})
+                  </h3>
+                  {member.bookLinks.length > 6 && (
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setBooksViewMode('list')}
+                        className={`px-3 py-1 text-sm rounded ${
+                          booksViewMode === 'list'
+                            ? 'bg-[#DD8D00] text-white'
+                            : 'bg-[#F8F4F1] text-[#3E5E17] hover:bg-[#E3DDC9]'
+                        } transition-colors`}
+                      >
+                        List
+                      </button>
+                      <button
+                        onClick={() => setBooksViewMode('grid')}
+                        className={`px-3 py-1 text-sm rounded ${
+                          booksViewMode === 'grid'
+                            ? 'bg-[#DD8D00] text-white'
+                            : 'bg-[#F8F4F1] text-[#3E5E17] hover:bg-[#E3DDC9]'
+                        } transition-colors`}
+                      >
+                        Grid
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* List View */}
+                {booksViewMode === 'list' && (
+                  <div className="space-y-6">
+                    {showAllBooks ? (
+                      member.bookLinks.map((book, index) => (
+                        <div key={index} className="flex gap-4 p-4 bg-[#F8F4F1] rounded-lg hover:bg-[#E3DDC9] transition-colors">
+                          {/* Book Cover */}
+                          {book.coverImageUrl && (
+                            <div className="flex-shrink-0">
+                              <Image
+                                src={book.coverImageUrl}
+                                alt={`${book.title} cover`}
+                                width={80}
+                                height={120}
+                                className="rounded shadow-md object-cover"
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Book Details */}
+                          <div className="flex-1">
+                            <h4 className="text-lg font-semibold text-[#222222] mb-2">
+                              {book.title}
+                            </h4>
+                            {book.description && (
+                              <p className="text-base text-[#3E5E17] mb-3">
+                                {book.description}
+                              </p>
+                            )}
+                            <a
+                              href={book.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center text-[#DD8D00] hover:text-[#DD8D00]/80 text-base font-medium"
+                            >
+                              View Book
+                              <ExternalLink className="w-4 h-4 ml-2" />
+                            </a>
+                          </div>
                         </div>
-                      )}
-                      
-                      {/* Book Details */}
-                      <div className="flex-1">
-                        <h4 className="text-lg font-semibold text-[#222222] mb-2">
+                      ))
+                    ) : (
+                      member.bookLinks.slice(0, 5).map((book, index) => (
+                        <div key={index} className="flex gap-4 p-4 bg-[#F8F4F1] rounded-lg hover:bg-[#E3DDC9] transition-colors">
+                          {/* Book Cover */}
+                          {book.coverImageUrl && (
+                            <div className="flex-shrink-0">
+                              <Image
+                                src={book.coverImageUrl}
+                                alt={`${book.title} cover`}
+                                width={80}
+                                height={120}
+                                className="rounded shadow-md object-cover"
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Book Details */}
+                          <div className="flex-1">
+                            <h4 className="text-lg font-semibold text-[#222222] mb-2">
+                              {book.title}
+                            </h4>
+                            {book.description && (
+                              <p className="text-base text-[#3E5E17] mb-3">
+                                {book.description}
+                              </p>
+                            )}
+                            <a
+                              href={book.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center text-[#DD8D00] hover:text-[#DD8D00]/80 text-base font-medium"
+                            >
+                              View Book
+                              <ExternalLink className="w-4 h-4 ml-2" />
+                            </a>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {/* Grid View */}
+                {booksViewMode === 'grid' && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {(showAllBooks ? member.bookLinks : member.bookLinks.slice(0, 8)).map((book, index) => (
+                      <div key={index} className="bg-[#F8F4F1] rounded-lg p-3 hover:bg-[#E3DDC9] transition-colors">
+                        {book.coverImageUrl && (
+                          <div className="mb-3">
+                            <Image
+                              src={book.coverImageUrl}
+                              alt={`${book.title} cover`}
+                              width={120}
+                              height={180}
+                              className="w-full h-32 object-cover rounded shadow-sm"
+                            />
+                          </div>
+                        )}
+                        <h4 className="text-sm font-semibold text-[#222222] mb-2 line-clamp-2">
                           {book.title}
                         </h4>
-                        {book.description && (
-                          <p className="text-base text-[#3E5E17] mb-3">
-                            {book.description}
-                          </p>
-                        )}
                         <a
                           href={book.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-[#DD8D00] hover:text-[#DD8D00]/80 text-base font-medium"
+                          className="inline-flex items-center text-[#DD8D00] hover:text-[#DD8D00]/80 text-sm font-medium"
                         >
-                          View Book
-                          <ExternalLink className="w-4 h-4 ml-2" />
+                          View
+                          <ExternalLink className="w-3 h-3 ml-1" />
                         </a>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
+
+                {member.bookLinks.length > (booksViewMode === 'list' ? 5 : 8) && (
+                  <div className="mt-4 text-center">
+                    <button
+                      onClick={() => setShowAllBooks(!showAllBooks)}
+                      className="inline-flex items-center text-[#DD8D00] hover:text-[#DD8D00]/80 text-base font-medium transition-colors"
+                    >
+                      {showAllBooks ? (
+                        <>
+                          Show Less ({member.bookLinks.length - (booksViewMode === 'list' ? 5 : 8)} fewer)
+                          <ChevronUp className="w-4 h-4 ml-2" />
+                        </>
+                      ) : (
+                        <>
+                          Show All Books ({member.bookLinks.length - (booksViewMode === 'list' ? 5 : 8)} more)
+                          <ChevronDown className="w-4 h-4 ml-2" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
