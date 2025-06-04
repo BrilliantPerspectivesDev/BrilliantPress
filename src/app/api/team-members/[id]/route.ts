@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
+import { getAdminDb, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
 import { TeamMember } from '@/types';
 
 // Helper function to verify authentication
@@ -19,6 +19,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+    const adminDb = getAdminDb();
     const doc = await adminDb.collection('team-members').doc(id).get();
     
     if (!doc.exists) {
@@ -72,6 +73,7 @@ export async function PUT(
     const { id } = await params;
     const memberData = await request.json();
     
+    const adminDb = getAdminDb();
     await adminDb.collection('team-members').doc(id).update({
       ...memberData,
       updatedAt: new Date(),
@@ -112,6 +114,7 @@ export async function DELETE(
     }
 
     const { id } = await params;
+    const adminDb = getAdminDb();
     await adminDb.collection('team-members').doc(id).delete();
     
     return NextResponse.json({ success: true });

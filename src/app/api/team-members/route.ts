@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
+import { getAdminDb, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
 import { TeamMember } from '@/types';
 
 // Helper function to verify authentication
@@ -15,12 +15,13 @@ async function verifyAdmin(idToken: string): Promise<boolean> {
 // GET - Fetch all team members (public)
 export async function GET() {
   try {
+    const adminDb = getAdminDb();
     const snapshot = await adminDb
       .collection('team-members')
       .orderBy('createdAt', 'desc')
       .get();
     
-    const teamMembers: TeamMember[] = snapshot.docs.map(doc => ({
+    const teamMembers: TeamMember[] = snapshot.docs.map((doc: FirebaseFirestore.QueryDocumentSnapshot) => ({
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate() || new Date(),
@@ -59,6 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     const memberData = await request.json();
+    const adminDb = getAdminDb();
     
     const docRef = await adminDb.collection('team-members').add({
       ...memberData,

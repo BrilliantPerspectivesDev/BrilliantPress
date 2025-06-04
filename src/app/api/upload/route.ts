@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminStorage, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
+import { getAdminStorage, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
 
 // Helper function to verify authentication
 async function verifyAuth(request: NextRequest): Promise<boolean> {
@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     // Create a reference to the file in Firebase Storage
+    const adminStorage = getAdminStorage();
     const bucket = adminStorage.bucket();
     const fileName = `images/${path || `${Date.now()}-${file.name}`}`;
     const fileRef = bucket.file(fileName);
