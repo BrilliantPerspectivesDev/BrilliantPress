@@ -5,7 +5,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { TeamMember } from '@/types';
-import { teamMembersApi, uploadApi } from '@/lib/api';
+import { addTeamMember, updateTeamMember, uploadImage } from '@/lib/firestore';
 import { X, Plus, Upload, Trash2, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 
@@ -135,8 +135,7 @@ export function TeamMemberForm({ member, onClose }: TeamMemberFormProps) {
       // Upload new image if selected
       if (imageFile) {
         const imagePath = `${Date.now()}-${imageFile.name}`;
-        const uploadResult = await uploadApi.uploadImage(imageFile, imagePath);
-        photoUrl = uploadResult.url;
+        photoUrl = await uploadImage(imageFile, imagePath);
       }
 
       // Upload book covers and prepare book links
@@ -159,8 +158,7 @@ export function TeamMemberForm({ member, onClose }: TeamMemberFormProps) {
           // Upload new cover if selected
           if (bookCoverFiles[index]) {
             const coverPath = `book-covers/${Date.now()}-${bookCoverFiles[index].name}`;
-            const uploadResult = await uploadApi.uploadImage(bookCoverFiles[index], coverPath);
-            coverImageUrl = uploadResult.url;
+            coverImageUrl = await uploadImage(bookCoverFiles[index], coverPath);
           }
 
           return {
@@ -196,10 +194,10 @@ export function TeamMemberForm({ member, onClose }: TeamMemberFormProps) {
 
       if (member) {
         // Update existing member
-        await teamMembersApi.update(member.id, memberData);
+        await updateTeamMember(member.id, memberData);
       } else {
         // Add new member
-        await teamMembersApi.create(memberData);
+        await addTeamMember(memberData);
       }
 
       onClose();

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { TeamMember } from '@/types';
-import { teamMembersApi } from '@/lib/api';
+import { getTeamMembers, deleteTeamMember } from '@/lib/firestore';
 import { signOutAdmin } from '@/lib/auth';
 import { useAuth } from '@/contexts/AuthContext';
 import { Header } from '@/components/Header';
@@ -29,7 +29,7 @@ export default function AdminPage() {
   async function fetchTeamMembers() {
     try {
       setLoading(true);
-      const members = await teamMembersApi.getAll();
+      const members = await getTeamMembers();
       setTeamMembers(members);
     } catch (err) {
       setError('Failed to load team members');
@@ -45,7 +45,7 @@ export default function AdminPage() {
     }
 
     try {
-      await teamMembersApi.delete(id);
+      await deleteTeamMember(id);
       setTeamMembers(prev => prev.filter(member => member.id !== id));
     } catch (err) {
       console.error('Error deleting team member:', err);
