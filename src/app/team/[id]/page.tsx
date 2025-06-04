@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TeamMember } from '@/types';
-import { teamMembersApi } from '@/lib/api';
+import { getTeamMember } from '@/lib/firestore';
 import { Header } from '@/components/Header';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { 
@@ -48,7 +48,7 @@ export default function TeamMemberPage() {
   async function fetchTeamMember(id: string) {
     try {
       setLoading(true);
-      const memberData = await teamMembersApi.getById(id);
+      const memberData = await getTeamMember(id);
       setMember(memberData);
     } catch (err) {
       setError('Team member not found');

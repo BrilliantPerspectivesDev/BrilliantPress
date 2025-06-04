@@ -255,4 +255,11 @@ The application is now fully functional with a complete Firebase backend and rea
 - **Security**: Firebase service account key properly excluded from repository using .gitignore
 - **Clean History**: Repository initialized without sensitive credentials in git history
 - **Complete Codebase**: All source code, documentation, and configuration files included
-- **Ready for Deployment**: Repository contains everything needed for production deployment 
+- **Ready for Deployment**: Repository contains everything needed for production deployment
+
+## Architecture Optimization for Public Press Site
+- **Client-Side Data Access**: Updated main page and team member pages to use client-side Firebase SDK directly
+- **No Service Account Required**: Public data access now works without Firebase Admin SDK service account key
+- **Simplified Deployment**: Production deployments only need Firebase client configuration (no sensitive server keys)
+- **Better Performance**: Direct client-side access eliminates API route overhead for public data
+- **Maintained Admin Functionality**: Admin panel still uses server-side API routes with proper authentication for write operations 
