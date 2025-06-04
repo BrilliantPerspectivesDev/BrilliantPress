@@ -34,6 +34,12 @@ export function Header() {
             >
               Media Kit
             </Link>
+            <Link 
+              href="/press-releases" 
+              className="text-[#3E5E17] hover:text-[#222222] transition-colors"
+            >
+              Press Releases
+            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -59,6 +65,13 @@ export function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Media Kit
+              </Link>
+              <Link 
+                href="/press-releases" 
+                className="text-[#3E5E17] hover:text-[#222222] transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Press Releases
               </Link>
             </nav>
           </div>

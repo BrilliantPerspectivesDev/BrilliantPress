@@ -182,7 +182,7 @@ export default function TeamMemberPage() {
                   {/* Email Button */}
                   {member.connectEmail && (
                     <a
-                      href={`mailto:${member.connectEmail}`}
+                      href={`mailto:${member.connectEmail}?subject=CONTACT FORM ${member.name.toUpperCase()}`}
                       className="inline-flex items-center px-6 py-3 bg-[#DD8D00] hover:bg-[#DD8D00]/90 text-white rounded-lg transition-colors group"
                     >
                       <Mail className="w-5 h-5 mr-3" />

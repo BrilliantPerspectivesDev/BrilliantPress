@@ -113,22 +113,6 @@ export default function Home() {
           </div>
         ) : (
           <>
-            {/* Speaker Count Header */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center px-4 py-2 bg-[#74A78E]/10 rounded-full mb-4">
-                <Users className="w-5 h-5 text-[#74A78E] mr-2" />
-                <span className="text-[#74A78E] font-medium">
-                  {teamMembers.length} {teamMembers.length === 1 ? 'Speaker' : 'Speakers'} Available
-                </span>
-              </div>
-              <p className="text-[#3E5E17] max-w-2xl mx-auto">
-                {teamMembers.length <= 3 
-                  ? "Meet our expert speakers and thought leaders."
-                  : "Browse our diverse roster of expert speakers and thought leaders."
-                }
-              </p>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {teamMembers.map((member) => (
                 <Link
@@ -170,9 +154,6 @@ export default function Home() {
                     {/* Bottom Content */}
                     <div className="text-white">
                       <h3 className="text-2xl font-bold mb-2">{member.name}</h3>
-                      <p className="text-lg font-medium text-[#74A78E] mb-3">
-                        Author & Speaker
-                      </p>
                       <p className="text-sm text-white/80 mb-4 line-clamp-2">
                         {member.bio.length > 100 ? `${member.bio.substring(0, 100)}...` : member.bio}
                       </p>
@@ -202,7 +183,13 @@ export default function Home() {
 
                         {/* Connect Email Indicator */}
                         {member.connectEmail && (
-                          <div className="w-8 h-8 bg-[#74A78E]/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                          <div 
+                            className="w-8 h-8 bg-[#74A78E]/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-[#74A78E]/30 transition-colors"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              window.location.href = `mailto:${member.connectEmail}?subject=CONTACT FORM ${member.name.toUpperCase()}`;
+                            }}
+                          >
                             <Mail className="w-4 h-4 text-white" />
                           </div>
                         )}

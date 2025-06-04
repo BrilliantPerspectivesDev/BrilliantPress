@@ -27,4 +27,28 @@ export interface AdminUser {
   uid: string;
   email: string;
   role: 'admin' | 'editor';
+}
+
+export interface PressRelease {
+  id: string;
+  title: string;
+  subtitle?: string;
+  content: string;
+  excerpt: string;
+  publishDate: Date;
+  author?: string;
+  category?: string;
+  tags?: string[];
+  featuredImageUrl?: string;
+  attachments?: PressReleaseAttachment[];
+  isPublished: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PressReleaseAttachment {
+  name: string;
+  url: string;
+  type: 'pdf' | 'image' | 'document' | 'other';
+  size?: number;
 } 

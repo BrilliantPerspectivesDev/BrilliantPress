@@ -17,6 +17,19 @@ service cloud.firestore {
       //   request.auth.token.admin == true;
     }
     
+    // Press releases collection
+    match /press-releases/{document} {
+      // Allow read access to everyone for published press releases
+      // For admin panel, allow read access to authenticated admins for all releases
+      allow read: if true;
+      
+      // Allow write access only to authenticated admin users
+      allow write: if request.auth != null && 
+        request.auth.token.email != null &&
+        (request.auth.token.email == 'admin@brilliantperspectives.com' ||
+         request.auth.token.email == 'matt@brilliantperspectives.com');
+    }
+    
     // Admin users collection (for future authentication)
     match /admin-users/{document} {
       // Only allow authenticated admins to read/write admin data

@@ -322,3 +322,156 @@ The application is now fully functional with a complete Firebase backend and rea
   - Maintains professional appearance at any scale
   - Shows collective team expertise through dynamic statistics
 - **Result**: Professional, scalable layout that handles any number of speakers beautifully 
+
+## 2024-12-19 - Enhanced Book Display System for Many Books
+- **Challenge**: User mentioned Graham has 20 books and asked for suggestions on handling many books
+- **Solution**: Implemented comprehensive book display system with multiple viewing options
+- **Features Added**:
+  - **Show More/Less Functionality**: Initially shows 5 books (list) or 8 books (grid) with expand/collapse
+  - **Dual View Modes**: Toggle between detailed list view and compact grid view
+  - **Smart Pagination**: Different limits based on view mode (5 for list, 8 for grid)
+  - **Book Count Display**: Shows total count in section header "Published Works (20)"
+  - **View Mode Controls**: Toggle buttons appear when >6 books
+  - **Responsive Grid**: 2-4 columns based on screen size in grid mode
+  - **Enhanced Visual Design**: Hover effects, transitions, consistent brand colors
+- **Technical Implementation**:
+  - Added `showAllBooks` and `booksViewMode` state management
+  - Conditional rendering based on view mode and show state
+  - Dynamic button text with accurate counts
+  - Responsive grid classes for different screen sizes
+- **User Experience**:
+  - Progressive disclosure prevents overwhelming users
+  - Choice between detailed (list) and overview (grid) views
+  - Clear visual feedback and smooth transitions
+  - Mobile-optimized layouts
+- **Scalability**: Handles 1-100+ books gracefully with same interface
+- **Result**: Professional, scalable solution that works beautifully for any number of books 
+
+## 2024-12-19 - Removed Generic Role Text from Team Member Cards
+- **User Request**: Remove the "Author & Speaker" line from the team member photo cards
+- **Change Made**: Removed the paragraph element displaying "Author & Speaker" text from the main page team member cards
+- **Impact**: 
+  - Cleaner card design with more focus on individual names and bios
+  - Removed generic role descriptions in favor of personalized bio content
+  - Better visual hierarchy with name directly followed by bio preview
+- **Location**: Updated `src/app/page.tsx` line 165 area
+- **Result**: More personalized and streamlined team member card presentation
+
+## 2024-12-19 - Added Email Subject Lines for Better Organization
+- **User Request**: Add subject line "CONTACT FORM *SPEAKER NAME*" to email links since all emails go to one address
+- **Changes Made**: 
+  - Updated main page email indicators to include subject line when clicked
+  - Updated individual team member page email buttons to include subject line
+  - Added hover effects and cursor pointer to main page email indicators
+- **Subject Line Format**: "CONTACT FORM [SPEAKER NAME IN UPPERCASE]"
+- **Benefits**:
+  - Better email organization when all contacts go to single address
+  - Easy identification of which speaker the inquiry is about
+  - Improved user experience with clear contact functionality
+- **Locations**: Updated `src/app/page.tsx` and `src/app/team/[id]/page.tsx`
+- **Result**: Professional email organization system for speaker inquiries
+
+## 2024-12-19 - Added Press Releases Section and Enhanced Site Structure
+- **User Request**: Add more structure to the website and include a navigation option for press releases
+- **Major Features Added**:
+  - **Navigation Enhancement**: Added "Press Releases" link to both desktop and mobile navigation menus
+  - **Press Release Types**: Created comprehensive TypeScript interfaces for PressRelease and PressReleaseAttachment
+  - **Press Releases Index Page**: Created `/press-releases` page with modern card-based layout
+  - **Individual Press Release Pages**: Created dynamic `/press-releases/[id]` pages for full article view
+  - **Mock Content**: Added sample press releases for demonstration
+- **Technical Implementation**:
+  - Updated `src/components/Header.tsx` with new navigation links
+  - Added PressRelease and PressReleaseAttachment interfaces to `src/types/index.ts`
+  - Created `src/app/press-releases/page.tsx` with responsive grid layout
+  - Created `src/app/press-releases/[id]/page.tsx` for individual article pages
+- **Design Features**:
+  - **Consistent Brand Styling**: Applied Brilliant Perspectives color scheme throughout
+  - **Responsive Layout**: Mobile-optimized grid system (1 column mobile, 2 columns desktop)
+  - **Rich Content Support**: Categories, tags, publish dates, authors, featured images
+  - **Interactive Elements**: Share functionality, hover effects, smooth transitions
+  - **Professional Typography**: Proper heading hierarchy and content formatting
+- **Content Structure**:
+  - **Press Release Cards**: Category badges, publish dates, excerpts, author attribution
+  - **Full Article View**: Complete content with markdown-style formatting support
+  - **Media Contact Section**: Dedicated contact information for press inquiries
+  - **Navigation**: Breadcrumb navigation and back buttons for easy site traversal
+- **User Experience**:
+  - **Loading States**: Consistent loading spinners across all pages
+  - **Error Handling**: Graceful error states with retry options
+  - **Empty States**: Helpful messaging when no content is available
+  - **Share Functionality**: Native share API with clipboard fallback
+- **Future-Ready Architecture**:
+  - **Firebase Integration Ready**: Structure prepared for Firebase backend integration
+  - **Admin Panel Ready**: Types and structure ready for admin content management
+  - **SEO Optimized**: Proper meta information and semantic HTML structure
+- **Sample Content**: Added two example press releases demonstrating the system capabilities
+- **Result**: Complete press site structure with professional news/announcement capabilities
+
+## 2024-12-19 - Complete Press Release Management System
+- **User Request**: Update the admin panel to handle press releases as well as Firebase to accept them
+- **Major Backend Implementation**:
+  - **Extended Firestore Library**: Added comprehensive CRUD functions for press releases in `src/lib/firestore.ts`
+    - `getPressReleases(publishedOnly)` - Fetch all or only published releases
+    - `getPressRelease(id)` - Fetch single press release
+    - `addPressRelease(data)` - Create new press release
+    - `updatePressRelease(id, data)` - Update existing press release
+    - `deletePressRelease(id)` - Delete press release
+    - `uploadAttachment(file, path)` - Upload press release attachments
+  - **Firebase Security Rules**: Updated Firestore rules to include press-releases collection permissions
+  - **Database Structure**: Organized collections as `team-members` and `press-releases` with proper indexing
+- **Comprehensive Admin Panel Enhancement**:
+  - **Tabbed Interface**: Added tabs for switching between Team Members and Press Releases management
+  - **Press Release Form**: Created full-featured form component (`PressReleaseForm.tsx`) with:
+    - Title, subtitle, excerpt, and full content fields
+    - Publish date, author, and category selection
+    - Dynamic tag management with add/remove functionality
+    - Featured image upload with preview
+    - Multiple file attachments with type detection and file size display
+    - Draft/Published status toggle with visual indicators
+    - Comprehensive form validation using Zod schema
+  - **Admin Press Release Cards**: Created `AdminPressReleaseCard.tsx` component with:
+    - Status indicators (Published/Draft) with eye icons
+    - Category and tag display
+    - Featured image thumbnails
+    - Excerpt preview with line clamping
+    - Edit and delete action buttons
+    - Attachment count indicators
+    - Creation and update timestamps
+- **Enhanced Public Pages**:
+  - **Updated Press Releases Index**: Connected to Firebase instead of mock data
+  - **Updated Individual Pages**: Connected to Firebase with published-only filtering
+  - **Real-time Data**: All press release pages now use live Firebase data
+- **File Management System**:
+  - **Organized Storage**: Press release images stored in `images/` folder, attachments in `attachments/` folder
+  - **File Type Detection**: Automatic categorization of attachments (PDF, image, document, other)
+  - **File Size Display**: Human-readable file size formatting
+  - **Sanitized Filenames**: Automatic filename sanitization to prevent URL encoding issues
+- **Advanced Features**:
+  - **Rich Content Support**: Markdown-style formatting support for press release content
+  - **Attachment Management**: Support for multiple file types with preview and removal
+  - **Tag System**: Dynamic tag creation and management with visual tag display
+  - **Publication Control**: Draft/published workflow with admin-only draft access
+  - **Search and Filtering**: Backend support for published-only filtering for public pages
+- **Security and Permissions**:
+  - **Updated Firestore Rules**: Added press-releases collection with proper read/write permissions
+  - **Admin Authentication**: Write operations restricted to admin emails
+  - **Public Read Access**: Published press releases accessible to all users
+  - **Draft Protection**: Draft releases only accessible to authenticated admins
+- **Technical Architecture**:
+  - **Type Safety**: Full TypeScript support with comprehensive interfaces
+  - **Error Handling**: Robust error handling throughout the system
+  - **Loading States**: Proper loading indicators for all async operations
+  - **Form Validation**: Client-side validation with server-side data integrity
+  - **Responsive Design**: Mobile-optimized admin interface and public pages
+- **Admin Panel Statistics**:
+  - **Dynamic Counts**: Tab headers show current count of team members and press releases
+  - **Status Overview**: Visual indicators for published vs draft releases
+  - **Quick Actions**: Easy access to create, edit, and delete operations
+- **Result**: Complete press release content management system with professional admin interface and public display 
+
+## Firebase Firestore Error Fixes
+- **Fixed Undefined Field Error**: Resolved Firebase error "Function addDoc() called with invalid data. Unsupported field value: undefined" when creating press releases
+  - Modified PressReleaseForm component to conditionally add featuredImageUrl and attachments fields only when they have values
+  - Changed from setting fields to `undefined` to omitting them entirely from the document data
+  - This prevents Firebase from rejecting documents with undefined field values
+  - Press release creation now works properly without featured images or attachments 
