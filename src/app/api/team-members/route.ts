@@ -31,10 +31,9 @@ export async function GET() {
     return NextResponse.json(teamMembers);
   } catch (error) {
     console.error('Error fetching team members:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch team members' },
-      { status: 500 }
-    );
+    
+    // Return empty array instead of error for better UX when Firebase is not configured
+    return NextResponse.json([]);
   }
 }
 

@@ -53,24 +53,39 @@ function initializeFirebaseAdmin() {
 // Lazy getters for Firebase services
 export function getAdminDb() {
   if (!adminDb) {
-    const app = initializeFirebaseAdmin();
-    adminDb = getFirestore(app);
+    try {
+      const app = initializeFirebaseAdmin();
+      adminDb = getFirestore(app);
+    } catch (error) {
+      console.error('Failed to initialize Firebase Admin DB:', error);
+      throw new Error('Firebase Admin SDK not configured');
+    }
   }
   return adminDb;
 }
 
 export function getAdminStorage() {
   if (!adminStorage) {
-    const app = initializeFirebaseAdmin();
-    adminStorage = getStorage(app);
+    try {
+      const app = initializeFirebaseAdmin();
+      adminStorage = getStorage(app);
+    } catch (error) {
+      console.error('Failed to initialize Firebase Admin Storage:', error);
+      throw new Error('Firebase Admin SDK not configured');
+    }
   }
   return adminStorage;
 }
 
 export function getAdminAuth() {
   if (!adminAuth) {
-    const app = initializeFirebaseAdmin();
-    adminAuth = getAuth(app);
+    try {
+      const app = initializeFirebaseAdmin();
+      adminAuth = getAuth(app);
+    } catch (error) {
+      console.error('Failed to initialize Firebase Admin Auth:', error);
+      throw new Error('Firebase Admin SDK not configured');
+    }
   }
   return adminAuth;
 }
