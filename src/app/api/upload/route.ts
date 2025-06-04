@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminStorage, verifyAdminToken } from '@/lib/firebase-admin';
+import { adminStorage, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
 
 // Helper function to verify authentication
 async function verifyAuth(request: NextRequest): Promise<boolean> {
@@ -9,7 +9,16 @@ async function verifyAuth(request: NextRequest): Promise<boolean> {
   }
   
   const idToken = authHeader.substring(7);
-  return await verifyAdminToken(idToken);
+  return await verifyAdmin(idToken);
+}
+
+async function verifyAdmin(idToken: string): Promise<boolean> {
+  try {
+    const decodedToken = await verifyIdToken(idToken);
+    return isAdminUser(decodedToken.email || '');
+  } catch {
+    return false;
+  }
 }
 
 export async function POST(request: NextRequest) {

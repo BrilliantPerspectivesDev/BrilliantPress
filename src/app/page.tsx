@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Social platform icon mapping
-const socialIcons: Record<string, any> = {
+const socialIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   twitter: Twitter,
   instagram: Instagram,
   linkedin: Linkedin,
@@ -96,7 +96,7 @@ export default function Home() {
           
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-[#3E5E17] max-w-4xl mx-auto leading-relaxed">
-            Welcome to Brilliant Perspectives Press Site, you'll find press releases, brand assets and speaker one-sheets here.
+            Welcome to Brilliant Perspectives Press Site, you&apos;ll find press releases, brand assets and speaker one-sheets here.
           </p>
         </div>
 

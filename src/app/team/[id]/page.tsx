@@ -8,7 +8,6 @@ import { TeamMember } from '@/types';
 import { teamMembersApi } from '@/lib/api';
 import { Header } from '@/components/Header';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { formatDate } from '@/lib/utils';
 import { 
   ArrowLeft, 
   ExternalLink, 
@@ -23,7 +22,7 @@ import {
 } from 'lucide-react';
 
 // Social platform icon mapping
-const socialIcons: Record<string, any> = {
+const socialIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   twitter: Twitter,
   instagram: Instagram,
   linkedin: Linkedin,
@@ -80,7 +79,7 @@ export default function TeamMemberPage() {
         <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <h1 className="text-2xl font-bold text-[#222222] mb-4">Team Member Not Found</h1>
-            <p className="text-[#3E5E17] mb-8">The team member you're looking for doesn't exist.</p>
+            <p className="text-[#3E5E17] mb-8">The team member you&apos;re looking for doesn&apos;t exist.</p>
             <Link
               href="/"
               className="inline-flex items-center px-4 py-2 bg-[#DD8D00] text-white rounded-lg hover:bg-[#DD8D00]/90 transition-colors"

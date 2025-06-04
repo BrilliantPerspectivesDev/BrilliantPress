@@ -17,13 +17,13 @@ async function getAuthHeaders(): Promise<HeadersInit> {
   };
 }
 
-// Helper function to convert date strings to Date objects
-function parseTeamMemberDates(member: any): TeamMember {
+// Helper function to parse dates from API responses
+function parseApiResponse(data: Record<string, unknown>): TeamMember {
   return {
-    ...member,
-    createdAt: new Date(member.createdAt),
-    updatedAt: new Date(member.updatedAt),
-  };
+    ...data,
+    createdAt: data.createdAt ? new Date(data.createdAt as string) : new Date(),
+    updatedAt: data.updatedAt ? new Date(data.updatedAt as string) : new Date(),
+  } as TeamMember;
 }
 
 // Team Members API
@@ -35,7 +35,7 @@ export const teamMembersApi = {
       throw new Error('Failed to fetch team members');
     }
     const data = await response.json();
-    return data.map(parseTeamMemberDates);
+    return data.map(parseApiResponse);
   },
 
   // Get single team member
@@ -45,7 +45,7 @@ export const teamMembersApi = {
       throw new Error('Failed to fetch team member');
     }
     const data = await response.json();
-    return parseTeamMemberDates(data);
+    return parseApiResponse(data);
   },
 
   // Create new team member

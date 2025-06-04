@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb, verifyAdminToken } from '@/lib/firebase-admin';
+import { adminDb, verifyIdToken, isAdminUser } from '@/lib/firebase-admin';
 import { TeamMember } from '@/types';
 
 // Helper function to verify authentication
-async function verifyAuth(request: NextRequest): Promise<boolean> {
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+async function verifyAdmin(idToken: string): Promise<boolean> {
+  try {
+    const decodedToken = await verifyIdToken(idToken);
+    return isAdminUser(decodedToken.email || '');
+  } catch {
     return false;
   }
-  
-  const idToken = authHeader.substring(7);
-  return await verifyAdminToken(idToken);
 }
 
 // GET - Fetch all team members (public)
@@ -42,7 +41,16 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     // Verify authentication
-    const isAuthenticated = await verifyAuth(request);
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Admin access required.' },
+        { status: 401 }
+      );
+    }
+    
+    const idToken = authHeader.substring(7);
+    const isAuthenticated = await verifyAdmin(idToken);
     if (!isAuthenticated) {
       return NextResponse.json(
         { error: 'Unauthorized. Admin access required.' },
