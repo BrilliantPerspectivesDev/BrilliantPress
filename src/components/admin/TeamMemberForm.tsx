@@ -134,7 +134,9 @@ export function TeamMemberForm({ member, onClose }: TeamMemberFormProps) {
 
       // Upload new image if selected
       if (imageFile) {
-        const imagePath = `${Date.now()}-${imageFile.name}`;
+        // Sanitize filename to prevent URL encoding issues
+        const sanitizedFileName = imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const imagePath = `${Date.now()}-${sanitizedFileName}`;
         photoUrl = await uploadImage(imageFile, imagePath);
       }
 
@@ -157,7 +159,9 @@ export function TeamMemberForm({ member, onClose }: TeamMemberFormProps) {
           
           // Upload new cover if selected
           if (bookCoverFiles[index]) {
-            const coverPath = `book-covers/${Date.now()}-${bookCoverFiles[index].name}`;
+            // Sanitize filename to prevent URL encoding issues
+            const sanitizedCoverName = bookCoverFiles[index].name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            const coverPath = `book-covers/${Date.now()}-${sanitizedCoverName}`;
             coverImageUrl = await uploadImage(bookCoverFiles[index], coverPath);
           }
 
