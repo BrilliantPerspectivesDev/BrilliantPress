@@ -112,89 +112,140 @@ export default function Home() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teamMembers.map((member) => (
-              <Link
-                key={member.id}
-                href={`/team/${member.id}`}
-                className="group relative bg-white overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 aspect-[4/5]"
-              >
-                {/* Background Image */}
-                <div className="absolute inset-0">
-                  {member.photoUrl ? (
-                    <Image
-                      src={member.photoUrl}
-                      alt={member.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-[#E3DDC9] to-[#74A78E] flex items-center justify-center">
-                      <span className="text-6xl font-bold text-[#222222]">
-                        {member.name.charAt(0)}
-                      </span>
-                    </div>
-                  )}
-                </div>
+          <>
+            {/* Speaker Count Header */}
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center px-4 py-2 bg-[#74A78E]/10 rounded-full mb-4">
+                <Users className="w-5 h-5 text-[#74A78E] mr-2" />
+                <span className="text-[#74A78E] font-medium">
+                  {teamMembers.length} {teamMembers.length === 1 ? 'Speaker' : 'Speakers'} Available
+                </span>
+              </div>
+              <p className="text-[#3E5E17] max-w-2xl mx-auto">
+                {teamMembers.length <= 3 
+                  ? "Meet our expert speakers and thought leaders."
+                  : "Browse our diverse roster of expert speakers and thought leaders."
+                }
+              </p>
+            </div>
 
-                {/* Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#222222]/70 via-[#222222]/20 to-transparent"></div>
-
-                {/* Content Overlay */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                  {/* Top Right Arrow */}
-                  <div className="flex justify-end">
-                    <div className="w-10 h-10 bg-[#DD8D00]/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <ArrowUpRight className="w-5 h-5 text-white" />
-                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {teamMembers.map((member) => (
+                <Link
+                  key={member.id}
+                  href={`/team/${member.id}`}
+                  className="group relative bg-white overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 aspect-[4/5]"
+                >
+                  {/* Background Image */}
+                  <div className="absolute inset-0">
+                    {member.photoUrl ? (
+                      <Image
+                        src={member.photoUrl}
+                        alt={member.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-[#E3DDC9] to-[#74A78E] flex items-center justify-center">
+                        <span className="text-6xl font-bold text-[#222222]">
+                          {member.name.charAt(0)}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Bottom Content */}
-                  <div className="text-white">
-                    <h3 className="text-2xl font-bold mb-2">{member.name}</h3>
-                    <p className="text-lg font-medium text-[#74A78E] mb-3">
-                      Author & Speaker
-                    </p>
-                    <p className="text-sm text-white/80 mb-4 line-clamp-2">
-                      {member.bio.length > 100 ? `${member.bio.substring(0, 100)}...` : member.bio}
-                    </p>
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#222222]/70 via-[#222222]/20 to-transparent"></div>
 
-                    {/* Social Icons and Email */}
-                    <div className="flex items-center justify-between">
-                      {/* Social Icons */}
-                      {member.socialLinks && member.socialLinks.length > 0 && (
-                        <div className="flex space-x-3">
-                          {member.socialLinks.slice(0, 3).map((social, index) => {
-                            const IconComponent = getSocialIcon(social.platform);
-                            return (
-                              <div
-                                key={index}
-                                className="w-8 h-8 bg-[#DD8D00]/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[#DD8D00]/30 transition-colors"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  window.open(social.url, '_blank');
-                                }}
-                              >
-                                <IconComponent className="w-4 h-4 text-white" />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
+                  {/* Content Overlay */}
+                  <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                    {/* Top Right Arrow */}
+                    <div className="flex justify-end">
+                      <div className="w-10 h-10 bg-[#DD8D00]/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <ArrowUpRight className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
 
-                      {/* Connect Email Indicator */}
-                      {member.connectEmail && (
-                        <div className="w-8 h-8 bg-[#74A78E]/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                          <Mail className="w-4 h-4 text-white" />
-                        </div>
-                      )}
+                    {/* Bottom Content */}
+                    <div className="text-white">
+                      <h3 className="text-2xl font-bold mb-2">{member.name}</h3>
+                      <p className="text-lg font-medium text-[#74A78E] mb-3">
+                        Author & Speaker
+                      </p>
+                      <p className="text-sm text-white/80 mb-4 line-clamp-2">
+                        {member.bio.length > 100 ? `${member.bio.substring(0, 100)}...` : member.bio}
+                      </p>
+
+                      {/* Social Icons and Email */}
+                      <div className="flex items-center justify-between">
+                        {/* Social Icons */}
+                        {member.socialLinks && member.socialLinks.length > 0 && (
+                          <div className="flex space-x-3">
+                            {member.socialLinks.slice(0, 3).map((social, index) => {
+                              const IconComponent = getSocialIcon(social.platform);
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-8 h-8 bg-[#DD8D00]/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[#DD8D00]/30 transition-colors"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    window.open(social.url, '_blank');
+                                  }}
+                                >
+                                  <IconComponent className="w-4 h-4 text-white" />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+
+                        {/* Connect Email Indicator */}
+                        {member.connectEmail && (
+                          <div className="w-8 h-8 bg-[#74A78E]/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                            <Mail className="w-4 h-4 text-white" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Additional Info Section for Multiple Speakers */}
+            {teamMembers.length > 3 && (
+              <div className="mt-16 text-center">
+                <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
+                  <h3 className="text-2xl font-bold text-[#222222] mb-4">
+                    Need Help Choosing a Speaker?
+                  </h3>
+                  <p className="text-[#3E5E17] mb-6">
+                    Our diverse team of experts covers a wide range of topics and speaking styles. 
+                    Click on any speaker above to view their full profile, expertise areas, and available materials.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#DD8D00]">{teamMembers.length}</div>
+                      <div className="text-sm text-[#3E5E17]">Expert Speakers</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#DD8D00]">
+                        {teamMembers.reduce((total, member) => total + (member.bookLinks?.length || 0), 0)}
+                      </div>
+                      <div className="text-sm text-[#3E5E17]">Published Works</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#DD8D00]">
+                        {teamMembers.reduce((total, member) => total + (member.socialLinks?.length || 0), 0)}
+                      </div>
+                      <div className="text-sm text-[#3E5E17]">Social Connections</div>
                     </div>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>

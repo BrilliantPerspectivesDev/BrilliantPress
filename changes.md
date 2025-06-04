@@ -264,6 +264,21 @@ The application is now fully functional with a complete Firebase backend and rea
 - **Better Performance**: Direct client-side access eliminates API route overhead for public data
 - **Maintained Admin Functionality**: Admin panel still uses server-side API routes with proper authentication for write operations
 
+## 2024-12-19 - Fixed Production Admin Panel Issue
+- **Problem**: Admin panel wasn't loading team members in production due to server-side API route dependencies
+- **Root Cause**: Admin panel was using `teamMembersApi` functions that call server-side API routes requiring Firebase Admin SDK
+- **Solution**: Updated admin panel to use client-side Firestore functions directly
+- **Changes Made**:
+  - Updated `src/app/admin/page.tsx` to use `getTeamMembers()` and `deleteTeamMember()` from `@/lib/firestore`
+  - Updated `src/components/admin/TeamMemberForm.tsx` to use `addTeamMember()`, `updateTeamMember()`, and `uploadImage()` from `@/lib/firestore`
+  - Fixed return value handling for `uploadImage()` function (direct string vs object with url property)
+- **Benefits**:
+  - Admin panel now works consistently in both development and production
+  - No server-side Firebase Admin SDK required for admin functionality
+  - Simplified deployment without service account key dependencies
+  - Better performance with direct Firestore access
+- **Result**: Admin panel fully functional in production with all CRUD operations working
+
 ## 2024-12-19 - Admin Panel Environment Configuration
 - **Issue**: User confirmed they want to keep the admin panel functionality
 - **Problem**: Firebase authentication errors due to missing/incorrect environment variables in `.env.local`
